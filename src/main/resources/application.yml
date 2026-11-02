@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/short_code_database?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
+    username: root
+    password: 123456
+sever:
+  port: 8080
