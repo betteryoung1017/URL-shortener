@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class ShortLink {
     private Long id;
-    private String shortcode;
+    private String shortCode;
     private String url;
     private LocalDateTime createdAt;
 
@@ -17,11 +17,11 @@ public class ShortLink {
     }
 
     public String getShortcode() {
-        return shortcode;
+        return shortCode;
     }
 
     public void setShortcode(String shortcode) {
-        this.shortcode = shortcode;
+        this.shortCode = shortcode;
     }
 
     public String getUrl() {

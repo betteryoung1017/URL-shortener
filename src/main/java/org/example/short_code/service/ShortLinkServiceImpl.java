@@ -29,5 +29,11 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         }
         return "http://localhost:8080/" + shortCode;
     }
-
+    public String getLongUrl(String shortCode){
+        ShortLink shortLink = shortLinkMapper.findByShortCode(shortCode);
+        if(shortLink == null) {
+            throw new IllegalArgumentException("短链不存在，请重新查询");
+        }
+        return shortLink.getUrl();
+    }
 }
