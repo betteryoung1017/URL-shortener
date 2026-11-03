@@ -1,4 +1,4 @@
-package pojo;
+package org.example.short_code.pojo;
 
 import java.time.LocalDateTime;
 

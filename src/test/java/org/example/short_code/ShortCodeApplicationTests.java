@@ -1,25 +1,19 @@
 package org.example.short_code;
 
-import mapper.ShortLinkMapper;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pojo.ShortLink;
+import org.example.short_code.service.ShortLinkService;
+
 
 @SpringBootTest
 class ShortCodeApplicationTests {
     @Autowired
-    private ShortLinkMapper shortLinkMapper;
+    private ShortLinkService shortLinkService;
     @Test
     void test(){
-        ShortLink shortLink = new ShortLink();
-        shortLink.setUrl("https://www.google.com");
-        shortLink.setShortcode("google");
-        int rows = shortLinkMapper.insert(shortLink);
-        System.out.println("插入成功" + rows);
-        ShortLink result = shortLinkMapper.findByShortCode("google");
-        System.out.println("查询结果" + result);
+        String shortCode = shortLinkService.createShortLink("https://www.baidu.com");
+        System.out.println("生成的短链是"+shortCode);
     }
 
 }

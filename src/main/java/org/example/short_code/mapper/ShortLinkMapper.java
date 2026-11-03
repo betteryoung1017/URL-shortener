@@ -1,9 +1,9 @@
-package mapper;
+package org.example.short_code.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import pojo.ShortLink;
+import org.example.short_code.pojo.ShortLink;
 @Mapper
 public interface ShortLinkMapper {
     @Insert("INSERT INTO shortlink (shortcode, url, creat_time) VALUES (#{shortcode}, #{url}, #{createdAt})")
