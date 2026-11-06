@@ -46,6 +46,9 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             return cached.isEmpty() ? null : cached;
         }
         ShortLink shortLink = shortLinkMapper.findByShortCode(shortCode);
+        if(shortLink == null){
+            throw new IllegalArgumentException("短链不存在");
+        }
         String longUrl = shortLink.getUrl();
         if (longUrl != null) {
             stringRedisTemplate.opsForValue().set(key, longUrl, REAL_TTL_HOURS, TimeUnit.HOURS);
