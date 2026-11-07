@@ -16,11 +16,11 @@ public class ShortLink {
         this.id = id;
     }
 
-    public String getShortcode() {
+    public String getShortCode() {
         return shortCode;
     }
 
-    public void setShortcode(String shortcode) {
+    public void setShortCode(String shortcode) {
         this.shortCode = shortcode;
     }
 
