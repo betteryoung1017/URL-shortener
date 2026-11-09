@@ -1,5 +1,6 @@
 package org.example.short_code.service;
 
+import org.example.short_code.component.BloomFilterManager;
 import org.example.short_code.mapper.ShortLinkMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +20,8 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     private static final long REAL_TTL_HOURS = 24;
     private static final long NULL_TTL_MINUTES = 5;
     public static final char[] BASE62_DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+    @Autowired
+    private BloomFilterManager bloomFilterManager;
     private String getRedisKey(String shortCode){
         return REDIS_KEY_PREFIX + shortCode;
     }
@@ -53,19 +56,26 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         }catch(DuplicateKeyException e){
             throw new IllegalArgumentException("短链已存在");//抛出异常，防止短链重复创建
         }
+        bloomFilterManager.add(shortCode);
         return "http://localhost:8080/" + shortCode;
     }
     @Override
     public String getLongUrl(String shortCode) {
+        if(!bloomFilterManager.contains(shortCode)){
+            throw new IllegalArgumentException("短链不存在");
+        }
         String key = getRedisKey(shortCode);
         String cached = stringRedisTemplate.opsForValue().get(key);
         if (cached != null) {
-            return cached.isEmpty() ? null : cached;
+            if(cached.isEmpty()){
+                throw new IllegalArgumentException("短链不存在");
+            }
+            return cached;
         }
         ShortLink shortLink = shortLinkMapper.findByShortCode(shortCode);
         if(shortLink == null){
             stringRedisTemplate.opsForValue().set(key, "", NULL_TTL_MINUTES, TimeUnit.MINUTES); // 设置缓存为空字符串，防止缓存穿透
-            return null;
+            throw new IllegalArgumentException("短链不存在");
         }
         String longUrl = shortLink.getUrl();
         stringRedisTemplate.opsForValue().set(key, longUrl, REAL_TTL_HOURS, TimeUnit.HOURS);

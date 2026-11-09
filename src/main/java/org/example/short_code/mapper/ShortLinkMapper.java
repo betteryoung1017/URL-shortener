@@ -2,6 +2,9 @@ package org.example.short_code.mapper;
 
 import org.apache.ibatis.annotations.*;
 import org.example.short_code.pojo.ShortLink;
+
+import java.util.List;
+
 @Mapper
 public interface ShortLinkMapper {
     @Insert("INSERT INTO shortlink (url, create_time) VALUES (#{url}, #{createdAt})")
@@ -11,4 +14,6 @@ public interface ShortLinkMapper {
     int update(ShortLink shortLink);
     @Select("SELECT id, shortcode AS shortCode, url, create_time AS createdAt FROM shortlink WHERE shortcode = #{shortCode}")
     ShortLink findByShortCode(String shortCode);
+    @Select("SELECT shortcode FROM shortlink")
+    List<String> getAllCodes();
 }
