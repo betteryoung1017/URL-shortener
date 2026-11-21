@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/short_code_database?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/short_code_database?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
     password: 123456
   data:
@@ -17,5 +17,7 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: 1000ms
-sever:
+server:
   port: 8080
+ai:
+  api-key: #{AI_API_KEY:}

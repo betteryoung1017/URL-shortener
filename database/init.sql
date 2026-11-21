@@ -4,7 +4,7 @@ create table shortlink
         primary key,
     shortcode  varchar(30)   null,
     url        varchar(2000) null,
-    creat_time datetime      null,
-    constraint table_name_pk
+    create_time datetime      null,
+    constraint uk_shortcode
         unique (shortcode)
 );
