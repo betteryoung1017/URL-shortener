@@ -7,6 +7,7 @@ public class ShortLink {
     private String shortCode;
     private String url;
     private LocalDateTime createdAt;
+    private String summary;
 
     public Long getId() {
         return id;
@@ -38,5 +39,13 @@ public class ShortLink {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

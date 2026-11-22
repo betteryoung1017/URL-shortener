@@ -16,4 +16,6 @@ public interface ShortLinkMapper {
     ShortLink findByShortCode(String shortCode);
     @Select("SELECT shortcode FROM shortlink")
     List<String> getAllCodes();
+    @Update("UPDATE shortlink SET summary = #{summary} WHERE id = #{id}")
+    int updateSummary(@Param("summary") String summary, @Param("id") long id);
 }

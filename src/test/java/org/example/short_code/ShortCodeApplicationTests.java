@@ -4,16 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.example.short_code.service.ShortLinkService;
+import org.springframework.web.servlet.resource.HttpResource;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 
 @SpringBootTest
 class ShortCodeApplicationTests {
-    @Autowired
-    private ShortLinkService shortLinkService;
     @Test
-    void test(){
-        String shortCode = shortLinkService.createShortLink("https://www.baidu.com");
-        System.out.println("生成的短链是"+shortCode);
+    void testAI() throws Exception {
+
     }
 
 }

@@ -1,6 +1,7 @@
 package org.example.short_code.controller;
 
 import org.example.short_code.pojo.Result;
+import org.example.short_code.pojo.ShortLinkResp;
 import org.example.short_code.service.ShortLinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ public class ShortLinkController {
     @Autowired
     private ShortLinkService shortLinkService;
     @GetMapping("/create")
-    public Result<String> creatShortLink(@RequestParam String url){
-        return Result.success(shortLinkService.createShortLink(url));
+    public Result<ShortLinkResp> creatShortLink(@RequestParam String url){
+        return Result.success(shortLinkService.createShortLink(url),"创建成功");
     }
 }

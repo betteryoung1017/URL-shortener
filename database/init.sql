@@ -1,10 +1,12 @@
-create table shortlink
+create table short_code_database.shortlink
 (
-    id         int auto_increment
+    id          int auto_increment
         primary key,
-    shortcode  varchar(30)   null,
-    url        varchar(2000) null,
+    shortcode   varchar(30)   null,
+    url         varchar(2000) null,
     create_time datetime      null,
-    constraint uk_shortcode
+    summary     varchar(255)  null,
+    constraint table_name_pk
         unique (shortcode)
 );
+

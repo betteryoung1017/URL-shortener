@@ -1,6 +1,8 @@
 package org.example.short_code.service;
 
+import org.example.short_code.pojo.ShortLinkResp;
+
 public interface ShortLinkService {
-    String createShortLink(String url);
+    ShortLinkResp createShortLink(String url);
     String getLongUrl(String shortCode);
 }

@@ -28,10 +28,11 @@ public class Result<T> {
     public void setData(T data) {
         this.data = data;
     }
-    public static <T> Result<T> success(T data){
+    public static <T> Result<T> success(T data,String msg){
         Result <T> result = new Result<T>();
         result.setCode(200);
         result.setData(data);
+        result.setMsg(msg);
         return result;
     }
     public static <T> Result<T> error(int code,String msg){
