@@ -4,6 +4,10 @@ spring:
     url: jdbc:mysql://localhost:3306/short_code_database?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
     password: 123456
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 10
+      connection-timeout: 3000
   data:
     redis:
       host: localhost
@@ -13,13 +17,16 @@ spring:
       connect-timeout: 2s
       lettuce:
         pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
-          max-wait: 1000ms
+          max-active: 50
+          max-idle: 50
+          min-idle: 50
+          max-wait: 3000
 server:
   port: 8080
 app:
   ai:
     enabled: true
     api-key: ${AI_API_KEY:}
+  cache:
+    mode: redis # none，redis,redis+bloom
+  base-url: http://localhost:8080
