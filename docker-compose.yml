@@ -1,0 +1,63 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: shortlink-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-123456}
+      MYSQL_DATABASE: short_code_database
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      # 数据持久化：容器删除后数据仍在
+      - mysql-data:/var/lib/mysql
+      # 初始化脚本：仅在数据卷为空时执行一次
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      # app 依赖此探针，确保 MySQL 真正可接受连接后才启动
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-123456}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    # 不映射到宿主机，避免与本机 MySQL 的 3306 冲突
+
+  redis:
+    image: redis:7-alpine
+    container_name: shortlink-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shortlink-app
+    ports:
+      - "8080:8080"
+    environment:
+      # 关键：容器内不能用 localhost，需用服务名
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/short_code_database?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      # AI 密钥通过环境变量注入，不写入镜像
+      AI_API_KEY: ${AI_API_KEY:-}
+      APP_CACHE_MODE: ${APP_CACHE_MODE:-redis}
+      TZ: Asia/Shanghai
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
+  redis-data:

@@ -1,12 +1,11 @@
-create table short_code_database.shortlink
+CREATE TABLE IF NOT EXISTS shortlink
 (
-    id          int auto_increment
-        primary key,
-    shortcode   varchar(30)   null,
-    url         varchar(2000) null,
-    create_time datetime      null,
-    summary     varchar(255)  null,
-    constraint table_name_pk
-        unique (shortcode)
+    id          INT AUTO_INCREMENT
+        PRIMARY KEY,
+    shortcode   VARCHAR(30)   NULL,
+    url         VARCHAR(2000) NULL,
+    create_time DATETIME      NULL,
+    summary     VARCHAR(255)  NULL,
+    CONSTRAINT uk_shortcode
+        UNIQUE (shortcode)
 );
-
